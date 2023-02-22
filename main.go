@@ -1,30 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+const url = "https://lco.dev"
+const myurl string = "https://courses.learncodeonline.in/learn/Complete-Javascript-course"
 
 func main() {
-	language := make(map[string]string)
+	fmt.Println("LCO wbe requests")
 
-	// To add value
+	fmt.Println(myurl)
 
-	language["JS"] = "Javascirpt"
-	language["Ruby"] = "Ruby"
-	language["Py"] = "Python"
+	response, err := http.Get(url)
 
-	fmt.Println("List of all language :", language)
-
-	// fetch particlur element
-
-	fmt.Println("Js short is ", language["JS"])
-
-	// delete
-
-	// delete(language, "RB")
-	// fmt.Println("List of all language", language)
-
-	//loop
-
-	for key, value := range language {
-		fmt.Printf("for key %v, value is %v\n", key, value)
+	if err != nil {
+		panic(err)
 	}
+
+	fmt.Printf("Response is of type: %T\n", response)
+	defer response.Body.Close()
+
+	databytes, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		panic(err)
+	}
+	content := string(databytes)
+	fmt.Println(content)
+
 }
